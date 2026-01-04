@@ -64,6 +64,9 @@ def post_solution(gist_url, problem_name):
     # Create tweet text
     tweet_text = f"Day {day}\n\n{problem_name}\n\n{gist_url}"
 
+    if len(tweet_text) > 280:
+        raise ValueError("Tweet exceeds 280 characters")
+
     print("\n" + "=" * 50)
     print("TWEET PREVIEW:")
     print("=" * 50)
@@ -82,8 +85,7 @@ def post_solution(gist_url, problem_name):
             # First tweet - start the thread
             print("\nPosting Day 1 and starting thread...")
             response = client.create_tweet(
-                text=tweet_text, reply_settings="mentionedUsers"
-            )
+                text=tweet_text)
             new_thread_id = response.data["id"]
             print(f"Thread started with Day {day}!")
         else:
@@ -91,8 +93,7 @@ def post_solution(gist_url, problem_name):
             print(f"\nPosting Day {day} as reply to thread...")
             response = client.create_tweet(
                 text=tweet_text,
-                in_reply_to_tweet_id=thread_id,
-                reply_settings="mentionedUsers",
+                in_reply_to_tweet_id=thread_id
             )
             new_thread_id = thread_id  # Keep the original thread ID
             print(f"Day {day} posted to thread!")
