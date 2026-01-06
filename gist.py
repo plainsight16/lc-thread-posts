@@ -1,6 +1,7 @@
 import os
 import requests
-from launch_editor import open_editor
+from editor import open_editor
+from template import DEFAULT_TEMPLATE
 
 GITHUB_API = "https://api.github.com/gists"
 
@@ -34,6 +35,7 @@ def create_gist(title, content, public=True, filename=None):
 
 def create_gist_from_editor(title):
     content = open_editor(
+        DEFAULT_TEMPLATE,
         initial_text=f"# {title}\n\n",
         suffix=".md"
     )
@@ -47,13 +49,3 @@ def create_gist_from_editor(title):
         filename="solution.md",
         public=True
     )
-
-
-def post_gist(problem, solution) -> str | None:
-    gist_url:str| None = create_gist(
-    title=f"LeetCode – {problem}",
-    content=solution,
-    public=True,
-    filename="solution.md"
-    )
-    return gist_url

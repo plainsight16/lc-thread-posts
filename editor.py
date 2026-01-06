@@ -3,7 +3,7 @@ import tempfile
 import subprocess
 
 
-def open_editor(initial_text="", suffix=".md"):
+def open_editor(template:str, initial_text="", suffix=".md", ):
     editor = os.getenv("EDITOR")
     if not editor:
         raise RuntimeError("EDITOR environment variable not set")
@@ -13,7 +13,8 @@ def open_editor(initial_text="", suffix=".md"):
         suffix=suffix,
         delete=False
     ) as f:
-        f.write(initial_text)
+        content = template.format(initial_text)
+        f.write(content)
         f.flush()
         path = f.name
 

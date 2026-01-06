@@ -1,5 +1,5 @@
 from twitter import client
-from gist import post_gist, create_gist_from_editor
+from gist import create_gist_from_editor
 from progress import load_progress, save_progress
 
 def post_solution(problem_name):
@@ -64,7 +64,7 @@ def main():
     print("\n" + "=" * 50)
     print("LEETCODE X POSTER")
     print("=" * 50 + "\n")
-    
+
     problem_name = input("Enter Problem Name: ").strip()
 
     if not problem_name:
