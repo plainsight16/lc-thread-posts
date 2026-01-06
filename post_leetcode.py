@@ -1,61 +1,10 @@
-import tweepy
-from dotenv import load_dotenv
-import os
-import json
+from twitter import client
+from gist import post_gist, create_gist_from_editor
+from progress import load_progress, save_progress
 
-# Load environment variables from .env file
-load_dotenv()
-
-# Get Twitter credentials from environment variables
-API_KEY = os.getenv("TWITTER_API_KEY")
-API_SECRET = os.getenv("TWITTER_API_SECRET")
-ACCESS_TOKEN = os.getenv("TWITTER_ACCESS_TOKEN")
-ACCESS_TOKEN_SECRET = os.getenv("TWITTER_ACCESS_TOKEN_SECRET")
-BEARER_TOKEN = os.getenv("TWITTER_BEARER_TOKEN")
-
-# Check if all credentials are loaded
-if not all([API_KEY, API_SECRET, ACCESS_TOKEN, ACCESS_TOKEN_SECRET, BEARER_TOKEN]):
-    print("Error: Missing Twitter credentials in .env file")
-    print("Please check your .env file and make sure all keys are filled in.")
-    exit(1)
-
-# Authenticate with Twitter
-try:
-    client = tweepy.Client(
-        bearer_token=BEARER_TOKEN,
-        consumer_key=API_KEY,
-        consumer_secret=API_SECRET,
-        access_token=ACCESS_TOKEN,
-        access_token_secret=ACCESS_TOKEN_SECRET,
-    )
-    print("Successfully connected to X API")
-except Exception as e:
-    print(f"Error connecting to X: {e}")
-    exit(1)
-
-
-def load_progress():
-    """Load the current day number and thread ID from progress.json"""
-    try:
-        with open("progress.json", "r") as f:
-            data = json.load(f)
-            print(f"Current progress: Day {data['day']}")
-            return data
-    except FileNotFoundError:
-        print("No previous progress found. Starting fresh!")
-        return {"day": 0, "thread_id": None}
-
-
-def save_progress(day, thread_id):
-    """Save the current day number and thread ID to progress.json"""
-    with open("progress.json", "w") as f:
-        json.dump({"day": day, "thread_id": thread_id}, f, indent=2)
-    print(f"Progress saved: Day {day}")
-
-
-def post_solution(gist_url, problem_name):
+def post_solution(problem_name):
     """Post the LeetCode solution to X"""
-
+    gist_url = create_gist_from_editor(problem_name)
     # Load current progress
     progress = load_progress()
     day = progress["day"] + 1
@@ -86,7 +35,7 @@ def post_solution(gist_url, problem_name):
             print("\nPosting Day 1 and starting thread...")
             response = client.create_tweet(
                 text=tweet_text)
-            new_thread_id = response.data["id"]
+            new_thread_id = response.data["id"] #type:ignore
             print(f"Thread started with Day {day}!")
         else:
             # Reply to the existing thread
@@ -115,14 +64,7 @@ def main():
     print("\n" + "=" * 50)
     print("LEETCODE X POSTER")
     print("=" * 50 + "\n")
-
-    # Get input from user
-    gist_url = input("Enter Gist URL: ").strip()
-
-    if not gist_url:
-        print("Error: Gist URL cannot be empty")
-        return
-
+    
     problem_name = input("Enter Problem Name: ").strip()
 
     if not problem_name:
@@ -130,7 +72,7 @@ def main():
         return
 
     # Post the solution
-    post_solution(gist_url, problem_name)
+    post_solution(problem_name)
 
 
 if __name__ == "__main__":
