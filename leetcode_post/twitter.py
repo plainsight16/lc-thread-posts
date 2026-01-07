@@ -13,6 +13,10 @@ class TwitterClient():
         response = self.client.create_tweet(text=text)
         return response.data["id"] #type:ignore
     
+    def test_credentials(self):
+        me = self.client.get_me()
+        return f"Logged in as: @{me.data.username}" #type:ignore
+    
     def post_tweet(self, tweet_text:str, thread_id=None):
         if thread_id:
             return self.client.create_tweet(
