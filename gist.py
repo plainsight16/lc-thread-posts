@@ -32,20 +32,3 @@ def create_gist(title, content, public=True, filename=None):
     response.raise_for_status()
 
     return response.json()["html_url"]
-
-def create_gist_from_editor(title):
-    content = open_editor(
-        DEFAULT_TEMPLATE,
-        initial_text=f"# {title}\n\n",
-        suffix=".md"
-    )
-
-    if not content.strip():
-        raise ValueError("Empty markdown file")
-
-    return create_gist(
-        title=title,
-        content=content,
-        filename="solution.md",
-        public=True
-    )

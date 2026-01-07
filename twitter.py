@@ -1,33 +1,28 @@
 import tweepy
-from dotenv import load_dotenv
 import os
-
-
-load_dotenv()
-
-# Get Twitter credentials from environment variables
-API_KEY = os.getenv("TWITTER_API_KEY")
-API_SECRET = os.getenv("TWITTER_API_SECRET")
-ACCESS_TOKEN = os.getenv("TWITTER_ACCESS_TOKEN")
-ACCESS_TOKEN_SECRET = os.getenv("TWITTER_ACCESS_TOKEN_SECRET")
-BEARER_TOKEN = os.getenv("TWITTER_BEARER_TOKEN")
-
-# Check if all credentials are loaded
-if not all([API_KEY, API_SECRET, ACCESS_TOKEN, ACCESS_TOKEN_SECRET, BEARER_TOKEN]):
-    print("Error: Missing Twitter credentials in .env file")
-    print("Please check your .env file and make sure all keys are filled in.")
-    exit(1)
-
-# Authenticate with Twitter
-try:
-    client = tweepy.Client(
-        bearer_token=BEARER_TOKEN,
-        consumer_key=API_KEY,
-        consumer_secret=API_SECRET,
-        access_token=ACCESS_TOKEN,
-        access_token_secret=ACCESS_TOKEN_SECRET,
+class TwitterClient():
+    def __init__(self):
+        self.client = tweepy.Client(
+        consumer_key=self._require("TWITTER_API_KEY"),
+        consumer_secret=self._require("TWITTER_API_SECRET"),
+        access_token=self._require("TWITTER_ACCESS_TOKEN"),
+        access_token_secret=self._require("TWITTER_ACCESS_TOKEN_SECRET")
     )
-    print("Successfully connected to X API")
-except Exception as e:
-    print(f"Error connecting to X: {e}")
-    exit(1)
+    
+    def start_thread(self, text:str):
+        response = self.client.create_tweet(text=text)
+        return response.data["id"] #type:ignore
+    
+    def post_tweet(self, tweet_text:str, thread_id=None):
+        if thread_id:
+            return self.client.create_tweet(
+                text=tweet_text,
+                in_reply_to_tweet_id=thread_id).data["id"] #type:ignore
+        return self.client.create_tweet(text=tweet_text).data["id"] #type:ignore
+    
+    @staticmethod
+    def _require(key:str):
+        value = os.getenv(key)
+        if not value:
+            raise ValueError(f"Missing required env: {key}")
+        return value
