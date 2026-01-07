@@ -1,11 +1,11 @@
 import sys
 from dotenv import load_dotenv
 
-from twitter import TwitterClient
-from progress import init_thread, load_progress, save_progress
-from editor import open_editor
-from template import DEFAULT_TEMPLATE
-from gist import create_gist
+from leetcode_post.twitter import TwitterClient
+from leetcode_post.progress import init_thread, load_progress, save_progress
+from leetcode_post.editor import open_editor
+from leetcode_post.template import DEFAULT_TEMPLATE
+from leetcode_post.gist import create_gist
 
 
 

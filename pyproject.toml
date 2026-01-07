@@ -1,0 +1,14 @@
+[project]
+name = "leetcode-post"
+version = "0.1.0"
+description = "CLI tool to post LeetCode solutions as GitHub gists and X threads"
+requires-python = ">=3.10"
+
+dependencies = [
+  "tweepy>=4.14",
+  "python-dotenv>=1.0",
+  "requests>=2.31"
+]
+
+[project.scripts]
+leetcode-post = "leetcode_post.cli:main"

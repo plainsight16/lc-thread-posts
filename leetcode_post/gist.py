@@ -1,7 +1,7 @@
 import os
 import requests
-from editor import open_editor
-from template import DEFAULT_TEMPLATE
+from leetcode_post.editor import open_editor
+from leetcode_post.template import DEFAULT_TEMPLATE
 
 GITHUB_API = "https://api.github.com/gists"
 
