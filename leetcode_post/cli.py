@@ -44,7 +44,7 @@ def start_thread_command():
 
 
 def post_leetcode_command(problem_name:str):
-    markdown = open_editor(problem_name, DEFAULT_TEMPLATE)
+    markdown = open_editor(DEFAULT_TEMPLATE, problem_name)
     
     gist_url = create_gist(
         title=problem_name,
@@ -72,9 +72,7 @@ def post_leetcode_command(problem_name:str):
         return
 
     twitter = TwitterClient()
-    res = twitter.post_tweet(tweet, thread_id)
-
-    new_thread_id = res.data["id"]
+    new_thread_id = twitter.post_tweet(tweet, thread_id)
     save_progress(day, new_thread_id)
 
     tweet_url = f"https://x.com/user/status/{new_thread_id}"
