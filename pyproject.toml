@@ -2,8 +2,20 @@
 name = "leetcode-post"
 version = "0.1.0"
 description = "CLI tool to post LeetCode solutions as GitHub gists and X threads"
+readme="README.md"
 requires-python = ">=3.10"
-
+license = { text = "MIT" }
+authors = [{ name = "Bakare Abdullahi", email = "bakareabdullahi23@gmail.com" }]
+keywords = ["leetcode", "twitter", "x", "cli", "automation"]
+classifiers = [
+  "Development Status :: 3 - Alpha",
+  "Environment :: Console",
+  "Intended Audience :: Developers",
+  "License :: OSI Approved :: MIT License",
+  "Programming Language :: Python :: 3",
+  "Programming Language :: Python :: 3.10",
+  "Programming Language :: Python :: 3.11",
+]
 dependencies = [
   "tweepy>=4.14",
   "python-dotenv>=1.0",
@@ -12,3 +24,8 @@ dependencies = [
 
 [project.scripts]
 leetcode-post = "leetcode_post.cli:main"
+
+[project.urls]
+Homepage = "https://github.com/plainsight16/lc-thread-posts"
+Repository = "https://github.com/plaisight16/lc-thread-posts"
+Issues = "https://github.com/Sadiq-Teslim/lc-thread-posts/issues"
